@@ -35,7 +35,7 @@ function Detection() {
         setStatus("Success. <result from model>");
         setProgress(100 / 1);
       }, 2000);
-    }, 2000);
+    }, 3000);
   };
 
   return (
