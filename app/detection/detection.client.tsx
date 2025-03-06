@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { FileUpload } from "@/components/ui/file-upload";
+import { Progress } from "@/components/ui/progress";
 import { IconChevronLeft } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,6 +12,8 @@ import { useState } from "react";
 function Detection() {
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [status, setStatus] = useState("");
+  const [progress, setProgress] = useState(0);
 
   const handleImageUpload = (files: File[]) => {
     // const file = event.target.files?.[0];
@@ -18,6 +21,21 @@ function Detection() {
       setImage(files[0]);
       setPreview(URL.createObjectURL(files[0]));
     }
+  };
+
+  const handleAnalyze = () => {
+    if (!image) return;
+    setStatus("Analyzing...");
+    setProgress(100 / 3);
+
+    setTimeout(() => {
+      setStatus("Detecting Cancerous Cell...");
+      setProgress(100 / 2);
+      setTimeout(() => {
+        setStatus("Success. <result from model>");
+        setProgress(100 / 1);
+      }, 2000);
+    }, 2000);
   };
 
   return (
@@ -55,8 +73,10 @@ function Detection() {
                 </div>
               )}
             </div>
+            {progress ? <Progress value={progress} /> : null}
+            <p className="text-lg">{status}</p>
 
-            <Button>Upload & Detect</Button>
+            <Button onClick={handleAnalyze}>Upload & Detect</Button>
           </CardContent>
         </Card>
       </div>
